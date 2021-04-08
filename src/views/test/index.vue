@@ -4,21 +4,15 @@
       <div slot="header">
         {{ name }}
       </div>
-      <div>
-        <el-input
-          v-model="messages"
-          class="readonly-input-block"
-          type="textarea"
-          readonly="readonly"
-          resize="none"
-        />
+      <div class="message-box">
+        {{messages}}
       </div>
       <div style="margin-top: 20px">
-        <el-input
-          v-model="inputMessage"
-          class="edit-input-block"
-          @keyup.enter.native="sendMessage()"
-        />
+        <el-input type="textarea"
+                  v-model="inputMessage"
+                  class="edit-input-block"
+                  @keydown.enter.native="changeLine"
+                  @keyup.enter.native="sendMessage" />
       </div>
     </el-card>
   </div>
@@ -32,16 +26,12 @@ export default {
   data() {
     return {
       conn: null,
-      messages: '',
-      inputMessage: ''
-    }
+      messages: "",
+      inputMessage: "",
+    };
   },
   computed: {
-    ...mapGetters([
-      'username',
-      'name',
-      'token'
-    ])
+    ...mapGetters(["username", "name", "token"]),
   },
   destroyed() {
     if (this.conn) {
@@ -49,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    this.initConnection()
+    this.initConnection();
   },
   methods: {
     initConnection() {
@@ -62,47 +52,71 @@ export default {
       //   protocol = 'ws'
       // }
       // this.conn = new WebSocket(`${protocol}://${host}/ws/v1/chat?token=${this.token}`);
-      this.conn = new WebSocket(`wss://pipages.byherui.com/ws/v1/chat?token=${this.token}`);
+      this.conn = new WebSocket(
+        `wss://pipages.byherui.com/ws/v1/chat?token=${this.token}`
+      );
       this.conn.onOpen = this.onConnectionOpen;
       this.conn.onmessage = this.onConnectionMessage;
       this.conn.onClose = this.onConnectionClose;
     },
     onConnectionOpen() {
-      console.log('Connected')
+      console.log("Connected");
     },
     onConnectionMessage(event) {
-      const data = JSON.parse(event.data)
+      const data = JSON.parse(event.data);
 
-      let src = '';
+      let src = "";
       if (data.code === 0) {
-        src = '系统'
+        src = "系统";
       } else {
-        src = data.src
+        src = data.src;
       }
 
-      this.messages = `${this.messages}${src}: ${data.data}\n`
+      this.messages = `${this.messages}${src}: ${data.data}\n`;
     },
     onConnectionClose() {
-      console.log('Closed')
+      console.log("Closed");
     },
-    sendMessage() {
-      if (this.conn && this.inputMessage) {
-        this.messages = `${this.messages}${this.name}(${this.username}): ${this.inputMessage}\n`
-        this.conn.send(this.inputMessage)
-        this.inputMessage = ''
+    changeLine(event) {
+      if (event.shiftKey) {
+        // do default
+        return;
       }
-    }
-  }
-}
+      // prevent default
+      event.returnValue = false;
+    },
+    sendMessage(event) {
+      if (event.ctrlKey || event.shiftKey) {
+        return;
+      }
+      if (this.conn && this.inputMessage) {
+        this.messages = `${this.messages}${this.name}(${this.username}): ${this.inputMessage}\n`;
+        this.conn.send(this.inputMessage);
+        this.inputMessage = "";
+      }
+    },
+  },
+};
 </script>
 
 <style>
-.readonly-input-block .el-textarea__inner{
+.readonly-input-block .el-textarea__inner {
   font-size: 14px;
   font-weight: bolder;
   height: 60vh;
+  white-space: pre-line;
 }
-.edit-input-bloc .el-textarea__inner{
+.message-box {
+  padding: 1vh 2vh;
+  border: 1px rgba(143, 143, 143, 0.5) solid;
+  font-size: 14px;
+  font-weight: bolder;
+  height: 60vh;
+  white-space: pre-line;
+  line-height: 1.5;
+  color: rgb(80, 80, 80);
+}
+.edit-input-bloc .el-textarea__inner {
   font-size: 14px;
   font-weight: bolder;
   height: 60vh;
@@ -110,5 +124,4 @@ export default {
 </style>
 
 <style scoped>
-
 </style>
