@@ -80,12 +80,12 @@ export default {
       this.messages = `${this.messages}${src}: ${data.data}\n`;
     },
     onConnectionClose() {
-      console.log("Closed");
+      this.initConnection();
     },
     async loadHistory() {
       const response = await chatHistoryApi()
       const data = response.data.data || []
-      for (const d of data) {
+      for (const d of data.reverse()) {
         this.messages = `${this.messages}${d.src}: ${d.data}\n`;
       }
       if (data.length > 0) {
@@ -106,7 +106,11 @@ export default {
       }
       if (this.conn && this.inputMessage) {
         this.messages = `${this.messages}${this.name}(${this.username}): ${this.inputMessage}\n`;
-        this.conn.send(this.inputMessage);
+        try {
+          this.conn.send(this.inputMessage);
+        } catch (_) {
+          this.initConnection();
+        }
         this.inputMessage = "";
       }
     },
