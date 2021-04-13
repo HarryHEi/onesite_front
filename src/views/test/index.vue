@@ -20,6 +20,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { chatHistoryApi } from "@/api/chat";
 
 export default {
   name: "ChatIndex",
@@ -39,9 +40,13 @@ export default {
     }
   },
   mounted() {
-    this.initConnection();
+    this.doInit()
   },
   methods: {
+    async doInit() {
+      await this.loadHistory();
+      await this.initConnection();
+    },
     initConnection() {
       // let host = location.host
       // if (host.search('localhost') >= 0) {
@@ -76,6 +81,16 @@ export default {
     },
     onConnectionClose() {
       console.log("Closed");
+    },
+    async loadHistory() {
+      const response = await chatHistoryApi()
+      const data = response.data.data || []
+      for (const d of data) {
+        this.messages = `${this.messages}${d.src}: ${d.data}\n`;
+      }
+      if (data.length > 0) {
+        this.messages = `${this.messages}\n-------  以上是历史消息-------\n\n`;
+      }
     },
     changeLine(event) {
       if (event.shiftKey) {
