@@ -1,18 +1,19 @@
 <template>
   <div>
     <el-card>
-      <div slot="header">
-        {{ name }}
-      </div>
       <div class="message-box">
-        {{messages}}
+        {{ messages }}
       </div>
       <div style="margin-top: 20px">
-        <el-input type="textarea"
-                  v-model="inputMessage"
-                  class="edit-input-block"
-                  @keydown.enter.native="changeLine"
-                  @keyup.enter.native="sendMessage" />
+        <el-input
+          ref="inputMessage"
+          v-model="inputMessage"
+          type="textarea"
+          placeholder="Enter 发送 / Shift + Enter 换行"
+          class="edit-input-block"
+          @keydown.enter.native="changeLine"
+          @keyup.enter.native="sendMessage"
+        />
       </div>
     </el-card>
   </div>
@@ -28,11 +29,11 @@ export default {
     return {
       conn: null,
       messages: "",
-      inputMessage: "",
+      inputMessage: ""
     };
   },
   computed: {
-    ...mapGetters(["username", "name", "token"]),
+    ...mapGetters(["username", "name", "token"])
   },
   destroyed() {
     if (this.conn) {
@@ -44,6 +45,7 @@ export default {
   },
   methods: {
     async doInit() {
+      this.$refs['inputMessage'].focus();
       await this.loadHistory();
       await this.initConnection();
     },
@@ -113,8 +115,8 @@ export default {
         }
         this.inputMessage = "";
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

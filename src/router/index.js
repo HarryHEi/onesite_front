@@ -43,25 +43,32 @@ export const constantRoutes = [
     hidden: true
   },
 
-  // {
-  //   path: "/",
-  //   component: Layout,
-  //   redirect: "/home",
-  //   children: [
-  //     {
-  //       path: "home",
-  //       name: "Home",
-  //       component: () => import("@/views/home/index"),
-  //       meta: { title: "主页", icon: "home" }
-  //     }
-  //   ]
-  // },
-
   {
     path: "/",
-    name: "Test",
-    component: () => import("@/views/test/index"),
-    meta: { title: "测试", icon: "example" }
+    component: Layout,
+    redirect: "/home",
+    children: [
+      {
+        path: "home",
+        name: "Home",
+        component: () => import("@/views/home/index"),
+        meta: { title: "主页", icon: "home" }
+      }
+    ]
+  },
+
+  {
+    path: "/chat",
+    component: Layout,
+    redirect: "/chat/index",
+    children: [
+      {
+        path: "index",
+        name: "Chat",
+        component: () => import("@/views/test/index"),
+        meta: { title: "沟通", icon: "example" }
+      }
+    ]
   },
 
   //
