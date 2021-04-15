@@ -58,6 +58,20 @@ export const constantRoutes = [
   },
 
   {
+    path: "/fs",
+    component: Layout,
+    redirect: "/fs/index",
+    children: [
+      {
+        path: "index",
+        name: "Fs",
+        component: () => import("@/views/fs/index"),
+        meta: { title: "存储", icon: "books" }
+      }
+    ]
+  },
+
+  {
     path: "/chat",
     component: Layout,
     redirect: "/chat/index",
