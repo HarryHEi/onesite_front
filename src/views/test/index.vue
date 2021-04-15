@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card>
-      <div class="message-box">
+      <div ref="messageBlock" class="message-box">
         {{ messages }}
       </div>
       <div style="margin-top: 20px">
@@ -80,6 +80,10 @@ export default {
       }
 
       this.messages = `${this.messages}${src}: ${data.data}\n`;
+
+      this.$nextTick(() => {
+        this.$refs['messageBlock'].scrollTop = this.$refs['messageBlock'].scrollHeight;
+      })
     },
     onConnectionClose() {
       this.initConnection();
@@ -93,6 +97,10 @@ export default {
       if (data.length > 0) {
         this.messages = `${this.messages}\n-------  以上是历史消息-------\n\n`;
       }
+
+      this.$nextTick(() => {
+        this.$refs['messageBlock'].scrollTop = this.$refs['messageBlock'].scrollHeight;
+      })
     },
     changeLine(event) {
       if (event.shiftKey) {
@@ -107,7 +115,7 @@ export default {
         return;
       }
       if (this.conn && this.inputMessage) {
-        this.messages = `${this.messages}${this.name}(${this.username}): ${this.inputMessage}\n`;
+        this.messages = `${this.messages}${this.name}: ${this.inputMessage}\n`;
         try {
           this.conn.send(this.inputMessage);
         } catch (_) {
@@ -115,6 +123,10 @@ export default {
         }
         this.inputMessage = "";
       }
+
+      this.$nextTick(() => {
+        this.$refs['messageBlock'].scrollTop = this.$refs['messageBlock'].scrollHeight;
+      })
     }
   }
 };
@@ -136,6 +148,7 @@ export default {
   white-space: pre-line;
   line-height: 1.5;
   color: rgb(80, 80, 80);
+  overflow:scroll;
 }
 .edit-input-bloc .el-textarea__inner {
   font-size: 14px;
