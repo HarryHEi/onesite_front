@@ -16,3 +16,11 @@ export function deleteFileApi(id) {
     method: 'delete'
   })
 }
+
+export function setExportFileApi(id, exported) {
+  return request({
+    url: `/api/v1/fs/export/${id}`,
+    method: 'post',
+    data: { exported }
+  })
+}

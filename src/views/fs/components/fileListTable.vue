@@ -18,6 +18,9 @@
       <el-table-column label="操作">
         <template slot-scope="d">
           <el-button type="text" @click="downloadFile(d.row)">下载</el-button>
+          <el-button v-if="!d.row.exported" type="text" @click="setExportFile(d.row, true)">开启外链</el-button>
+          <el-button v-if="d.row.exported" type="text" @click="setExportFile(d.row, false)">关闭外链</el-button>
+          <el-button v-if="d.row.exported" type="text" @click="copyExportUrlToClipboard(d.row)">复制外链地址</el-button>
           <el-button type="text" style="color: red" @click="deleteFile(d.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -36,8 +39,9 @@
 </template>
 
 <script>
-import { deleteFileApi } from "@/api/fs";
+import { deleteFileApi, setExportFileApi } from "@/api/fs";
 import axios from 'axios'
+import { Message } from "element-ui";
 
 export default {
   name: "FileListTable",
@@ -112,6 +116,20 @@ export default {
       this.minusPage();
       this.hideLoading();
       this.pageChanged();
+    },
+    async setExportFile({ id }, exported) {
+      this.showLoading();
+      await setExportFileApi(id, exported);
+      this.hideLoading();
+      this.pageChanged();
+    },
+    copyExportUrlToClipboard({ id }) {
+      this.$copyText(`${location.protocol}//${location.host}/api/v1/export/fs/${id}`, this.$refs.container)
+      Message({
+        message: '复制成功',
+        type: 'success',
+        duration: 5 * 1000
+      });
     }
   }
 }
