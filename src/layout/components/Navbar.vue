@@ -1,20 +1,20 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
+<!--    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />-->
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
       <p class="menu-username">{{ name }}</p>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/avatar/user.png" class="user-avatar">
+          <img v-if="avatar" :src="`/api/v1/export/avatar/${uid}`" class="user-avatar">
+          <img v-if="!avatar" src="@/assets/avatar/user.png" class="user-avatar">
 <!--          <i class="el-icon-caret-bottom" />-->
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
+          <router-link to="/user/index">
             <el-dropdown-item>
-              主页
+              个人信息
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
@@ -29,18 +29,19 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+// import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    Breadcrumb,
-    Hamburger
+    Breadcrumb
+    // Hamburger
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'name'
+      'name',
+      'uid'
     ])
   },
   methods: {

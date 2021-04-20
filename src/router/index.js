@@ -58,6 +58,21 @@ export const constantRoutes = [
   },
 
   {
+    path: "/user",
+    component: Layout,
+    redirect: "/user/index",
+    hidden: true,
+    children: [
+      {
+        path: "index",
+        name: "User",
+        component: () => import("@/views/user/index"),
+        meta: { title: "用户信息", icon: "home", activeMenu: '/home' }
+      }
+    ]
+  },
+
+  {
     path: "/fs",
     component: Layout,
     redirect: "/fs/index",
@@ -66,7 +81,7 @@ export const constantRoutes = [
         path: "index",
         name: "Fs",
         component: () => import("@/views/fs/index"),
-        meta: { title: "存储", icon: "books" }
+        meta: { title: "存储", icon: "storage" }
       }
     ]
   },
@@ -80,7 +95,7 @@ export const constantRoutes = [
         path: "index",
         name: "Chat",
         component: () => import("@/views/test/index"),
-        meta: { title: "沟通", icon: "example" }
+        meta: { title: "沟通", icon: "chat" }
       }
     ]
   },
