@@ -47,6 +47,7 @@ export default {
         type: 'success',
         duration: 5 * 1000
       });
+      location.reload();
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
