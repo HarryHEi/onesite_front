@@ -73,6 +73,34 @@ export const constantRoutes = [
   },
 
   {
+    path: "/article",
+    component: Layout,
+    redirect: "/article/index",
+    children: [
+      {
+        path: "index",
+        name: "Article",
+        component: () => import("@/views/blog/articleList/index"),
+        meta: { title: "博文", icon: "example" }
+      },
+      {
+        path: "edit",
+        name: "ArticleEdit",
+        hidden: true,
+        component: () => import("@/views/blog/editor/index"),
+        meta: { title: "编辑博文" }
+      },
+      {
+        path: 'detail/:pk(.*?)',
+        name: "ArticleDetail",
+        hidden: true,
+        component: () => import("@/views/blog/articleDetail/index"),
+        meta: { title: "博文详情" }
+      }
+    ]
+  },
+
+  {
     path: "/fs",
     component: Layout,
     redirect: "/fs/index",
