@@ -43,8 +43,8 @@ export default {
       this.loading = true
       try {
         const response = await listArticleApi(
-          Math.ceil(this.articles.length / 4) + 1,
-          4
+          Math.ceil(this.articles.length / 10) + 1,
+          10
         )
         if (response.data.data.count === this.articles.length || response.data.data.data.len === 0) {
           this.finished = true
