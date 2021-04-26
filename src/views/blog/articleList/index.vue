@@ -24,6 +24,7 @@ import { datetimeFormatter } from "@/common/js";
 import articleView from "@/views/blog/articleList/components/articleView";
 
 export default {
+  name: "Article",
   components: { articleView },
   data() {
     return {

@@ -16,7 +16,7 @@ import { queryArticleDetail } from "@/api/blog";
 import { datetimeFormatter } from "@/common/js";
 
 export default {
-  name: "Index",
+  name: "ArticleDetail",
   data() {
     return {
       viewer: '',

@@ -26,7 +26,7 @@ import { Message } from "element-ui";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "Index",
+  name: "UserIndex",
   data() {
     return {
       headers: {

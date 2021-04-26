@@ -24,7 +24,7 @@ import { listFilesApi } from "@/api/fs";
 import { Message } from 'element-ui'
 
 export default {
-  name: "Index",
+  name: "FsIndex",
   components: { fileListTable },
   data() {
     return {

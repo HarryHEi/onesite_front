@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "Index",
+  name: "HomeIndex",
   methods: {
     goUrl(url) {
       this.$router.push(url)

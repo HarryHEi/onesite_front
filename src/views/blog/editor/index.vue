@@ -15,6 +15,7 @@ import { commitArticleApi } from "@/api/blog";
 import { Message } from "element-ui";
 
 export default {
+  name: "ArticleEdit",
   data() {
     return {
       title: "",
